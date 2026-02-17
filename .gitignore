@@ -1,0 +1,11 @@
+# Environment variables (contains secrets)
+.env
+
+# Google OAuth credentials file
+client_secret_*.json
+
+# MCP server token storage
+google_workspace_mcp/.credentials/
+
+# Python virtual environment
+google_workspace_mcp/.venv/
