@@ -99,9 +99,7 @@ After listing them, ask the user:
    from the previous steps (modules, submodules) as input for compiling the docuemnt 
 
    **DOCUMENT 2 — Report domande da porre al cliente**
-   Compile all questions identified during the analysis (from the deep dive, 
-   risk assessment, and any additional questions that emerged throughout the conversation) 
-   into a structured report.
+   Compile all questions identified during the analysis (from the deep dive, risk assessment, and any additional questions that emerged throughout the conversation) into a structured report called 'Domande_cliente_{Nome_cliente}_{Date}' in markdown format. 
    
    Format:
    - Group questions by module/topic area
