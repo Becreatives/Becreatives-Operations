@@ -92,21 +92,7 @@ Placeholder tipici (ma verifica sempre leggendo il template):
 
 #### 3.4 Adatta il contenuto tecnico
 
-Se esiste una SCHEDA PROGETTO, usa i suoi dati per popolare le sezioni tecniche del preventivo. Mappatura:
-
-| Scheda Progetto | Preventivo |
-|---|---|
-| Moduli + Descrizione | Sezioni funzionali del preventivo |
-| Sotto-moduli | Dettaglio feature per sezione |
-| Rischi Critici | Sezione assunzioni/esclusioni |
-| Raccomandazioni | Approccio progettuale |
-| Score complessita/rischio | **NON includere** (sono interni) |
-
-Per manipolazioni complesse del contenuto, usa in ordine:
-1. `mcp__google-workspace__inspect_doc_structure` per capire la struttura del documento
-2. `mcp__google-workspace__find_and_replace_doc` per sostituzioni semplici
-3. `mcp__google-workspace__batch_update_doc` per modifiche strutturali
-4. `mcp__google-workspace__insert_doc_elements` per inserire nuovi contenuti
+Utilizza la struttura in moduli e sottomoduli (indicati con bulletpoints) per definire in modo chiaro nel preventivo le funzionalità e caratteristiche che saranno incluse nel progetto. Siccome il documento sarà client-facing, non esternare punteggi di rischio e tempistiche necessarie per ciascun modulo. L'obiettivo è quello di dare una panoramica chiara al cliente di quello che è effettivamente incluso nel preventivo
 
 **Importante sul linguaggio:** Il preventivo e un documento cliente-facing. Trasforma il linguaggio tecnico della Scheda in linguaggio comprensibile per il cliente. Evita gergo tecnico dove possibile.
 
