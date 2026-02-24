@@ -1,0 +1,10 @@
+{
+  "name": "preventivo",
+  "version": "1.0.0",
+  "description": "Genera preventivi in 2 fasi: stima progetto + scrittura documento Google Docs. Per il team Becreatives.",
+  "author": {
+    "name": "Becreatives",
+    "url": "https://becreatives.com"
+  },
+  "keywords": ["preventivo", "estimate", "quote", "google-docs"]
+}

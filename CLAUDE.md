@@ -4,18 +4,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Preventivo Generator** - A Claude Code skill suite for Becreatives that automates quote/estimate (preventivo) generation in 2 fasi:
+**Preventivo Generator** - A Claude Code/Cowork plugin for Becreatives that automates quote/estimate (preventivo) generation in 2 fasi:
 1. **Stima** — Analisi progetto, identificazione moduli, scoring complessita/rischio, produzione Scheda Progetto
 2. **Scrittura** — Generazione documento Google Docs da template con contenuto adattato dalla Scheda Progetto
 
 Integra la logica di stima progetti (derivata dal custom GPT) con la generazione automatica del documento.
 
+## Plugin
+
+Il Preventivo Generator e distribuito come **plugin** nella directory `preventivo-plugin/`. Funziona sia in Claude Code che in Claude Cowork.
+
+Per usarlo in Claude Code:
+```bash
+claude --plugin-dir ./preventivo-plugin
+```
+
+Per dettagli su installazione e configurazione, vedi `preventivo-plugin/README.md`.
+
 ## MCP Server Integration
 
 This project uses the `google_workspace_mcp` server for Google Docs/Slides/Drive access.
 
-- **MCP Config:** `.mcp.json` (project-scoped, uses env vars for credentials)
-- **MCP Server:** `./google_workspace_mcp` (bundled in project)
+- **MCP Config:** `preventivo-plugin/.mcp.json` (plugin-scoped, uses env vars for credentials)
+- **MCP Server:** `./google_workspace_mcp` (bundled in project, symlinked into plugin)
 - **Google Cloud Project:** `becreatives-mcp`
 
 ### Teammate Setup
@@ -27,10 +38,10 @@ This project uses the `google_workspace_mcp` server for Google Docs/Slides/Drive
    ```
    Get credentials from the team or create your own via Google Cloud Console (see `Setup.md`).
 
-2. **Start Claude Code** from the project directory:
+2. **Start Claude Code** with the plugin:
    ```bash
    cd /path/to/Becreatives-Operations
-   claude
+   claude --plugin-dir ./preventivo-plugin
    ```
 
 3. **Approve the MCP server** when prompted on first run.
@@ -39,10 +50,7 @@ This project uses the `google_workspace_mcp` server for Google Docs/Slides/Drive
 
 ### Google Account for MCP
 
-When using MCP tools that require a Google email parameter (`user_google_email`), always use:
-```
-v.dipalo@becreatives.com
-```
+Il plugin chiede l'email Google Workspace dell'utente al primo utilizzo di ogni sessione. Usa la tua email `@becreatives.com`.
 
 ### Available MCP Tools
 
@@ -55,15 +63,18 @@ Once authenticated, the following Google Workspace tools are available:
 
 ```
 Becreatives-Operations/
-├── CLAUDE.md                    # This file
-├── Setup.md                     # MCP setup guide
-├── gpt-instructions.md          # Logica GPT originale (riferimento)
-├── .claude/
-│   └── commands/
-│       ├── preventivo.md        # Orchestratore: entry point /preventivo
-│       ├── preventivo-stima.md  # Fase 1: Stima e analisi progetto
-│       └── preventivo-scrivi.md # Fase 2: Scrittura documento Google Docs
-└── google_workspace_mcp/        # Bundled MCP server
+├── CLAUDE.md                              # This file
+├── Setup.md                               # MCP setup guide
+├── gpt-instructions.md                    # Logica GPT originale (riferimento)
+├── preventivo-plugin/                     # Plugin directory
+│   ├── .claude-plugin/plugin.json         # Plugin manifest
+│   ├── commands/preventivo.md             # Orchestratore: entry point
+│   ├── skills/
+│   │   ├── stima/SKILL.md                 # Fase 1: Stima e analisi progetto
+│   │   └── scrivi/SKILL.md               # Fase 2: Scrittura documento Google Docs
+│   ├── .mcp.json                          # MCP config (env var refs)
+│   └── google_workspace_mcp → (symlink)   # MCP server
+└── google_workspace_mcp/                  # Bundled MCP server
 ```
 
 ## Templates
@@ -72,47 +83,32 @@ I template dei preventivi sono salvati su Google Drive:
 - **Folder ID:** `1R5zRxYN40K7CEAq8M9cF2384VW_0S5pr`
 - **Link:** https://drive.google.com/drive/folders/1R5zRxYN40K7CEAq8M9cF2384VW_0S5pr
 
-### Template Disponibili
-
-**Sviluppo:**
-- Applicazione (`1fjIBwrTmb5O3t2z9IREEDXvt19ED0NP9z5PjACbwixU`)
-- Applicazione AR (`1gsoXI6EVf9kftKeRvN868ntu9lDhxxXNa2GKr-gX93s`)
-- E-commerce Shopify custom (`1Azp9BrVb6rPCDWFaPLh6RJsRQdPLpYDR5sKY9-IRweY`)
-- E-commerce Shopify headless (`19LkAm-hwHQ48T7keoVw95DME3RQeyn5Yz3mmImxaz5c`)
-- E-commerce WooCommerce (`1t5XiVZePXBTmq6g-9vcXf4RmZbMqWwUkr2YJabEalog`)
-- Piattaforma web Custom (`1XJ7xSYPDAZF2awSyF3GF9OD8fhqh9LwXveCEu4V5nMg`)
-- Piattaforma web Wordpress (`12yd6_rOh47cFdXSgh1w7Lnfrj6m7p7jMixn1eQIO4Wo`)
-
-**Manutenzione:**
-- Manutenzione evolutiva (`1XzFErDBzkdqNBIrildYq2PCeFWA7WMCUolwFipdRKeU`)
-- Manutenzione ordinaria a giornate (`1EWwvj3Oio4e2rgxxWoqaaRLuH3OrwuO9OsshdnZvmlI`)
-- Manutenzione ordinaria pacchetto a consumo (`1bWQr2cpQfH8EIMoUNxpV31YDS13Vye-Vn7Cone1kj7U`)
-- Manutenzione ordinaria pacchetto mensile (`1cXbpjjyFelt65NaLkSp7qqpfYWBcQ_bw-tirW3Wj3hg`)
+La lista completa dei template e i loro ID si trovano in `preventivo-plugin/skills/scrivi/references/templates.md`.
 
 ## Comandi Disponibili
 
 | Comando | Descrizione | Uso standalone |
 |---|---|---|
-| `/preventivo` | Flusso completo: stima + pausa revisione + scrittura documento | Entry point principale |
-| `/preventivo-stima` | Solo Fase 1: analisi progetto e produzione Scheda Progetto | Si, per stime senza generare documenti |
-| `/preventivo-scrivi` | Solo Fase 2: scrittura documento Google Docs da template | Si, se hai gia le info pronte |
+| `/preventivo:preventivo` | Flusso completo: stima + pausa revisione + scrittura documento | Entry point principale |
+| `/preventivo:stima` | Solo Fase 1: analisi progetto e produzione Scheda Progetto | Si, per stime senza generare documenti |
+| `/preventivo:scrivi` | Solo Fase 2: scrittura documento Google Docs da template | Si, se hai gia le info pronte |
 
 ## Key Workflows
 
-### Generate Preventivo (comando: `/preventivo`)
+### Generate Preventivo (comando: `/preventivo:preventivo`)
 
 Processo a 2 fasi con pausa per revisione:
 
-1. L'utente invoca `/preventivo`
+1. L'utente invoca `/preventivo:preventivo`
 2. Sceglie come procedere: brief, definizione guidata, o salto diretto alla scrittura
-3. **Fase 1 - Stima** (`preventivo-stima.md`):
+3. **Fase 1 - Stima** (skill `stima`):
    - Intake del brief (da Slides/Docs/testo o raccolta interattiva)
    - Identificazione moduli (7-15)
    - Gate di allineamento con scoring complessita/rischio (richiede 90%+)
    - Deep dive su rischi, ambiguita, architettura
    - Produzione SCHEDA PROGETTO strutturata
 4. **Pausa obbligatoria**: L'utente rivede e approva la Scheda Progetto
-5. **Fase 2 - Scrittura** (`preventivo-scrivi.md`):
+5. **Fase 2 - Scrittura** (skill `scrivi`):
    - Selezione template (suggerito dalla Scheda)
    - Raccolta info mancanti (solo cio che non e nella Scheda)
    - Copia template, scoperta placeholder dinamica, compilazione

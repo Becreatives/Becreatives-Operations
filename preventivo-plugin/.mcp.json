@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "google-workspace": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "./google_workspace_mcp",
+        "run",
+        "main.py"
+      ],
+      "env": {
+        "GOOGLE_OAUTH_CLIENT_ID": "${GOOGLE_OAUTH_CLIENT_ID}",
+        "GOOGLE_OAUTH_CLIENT_SECRET": "${GOOGLE_OAUTH_CLIENT_SECRET}"
+      }
+    }
+  }
+}
