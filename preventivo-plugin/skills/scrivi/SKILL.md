@@ -17,7 +17,7 @@ Puo essere usata:
 
 ## Configurazione Utente
 
-Se non e stata ancora specificata in questa conversazione, chiedi all'utente la sua email Google Workspace (es: `nome.cognome@becreatives.com`).
+Se non e stata ancora specificata in questa conversazione, chiedi all'utente la sua email Google Workspace (es: `primaletteranome.cognome@becreatives.com`).
 Usa questa email come parametro `user_google_email` in **tutte** le chiamate MCP successive.
 
 ## Procedura
@@ -54,7 +54,6 @@ Identifica quali informazioni servono e quali sono GIA disponibili nella SCHEDA 
 - Costo totale
 - Condizioni di pagamento
 
-Se l'utente fornisce un link a Google Slides con lo scope del progetto, leggi il contenuto con `mcp__google-workspace__get_presentation` usando l'email raccolta dall'utente.
 
 ### Step 3: Crea il Documento
 
@@ -93,6 +92,14 @@ Placeholder tipici (ma verifica sempre leggendo il template):
 Utilizza la struttura in moduli e sottomoduli (indicati con bulletpoints) per definire in modo chiaro nel preventivo le funzionalita e caratteristiche che saranno incluse nel progetto. Siccome il documento sara client-facing, non esternare punteggi di rischio e tempistiche necessarie per ciascun modulo. L'obiettivo e quello di dare una panoramica chiara al cliente di quello che e effettivamente incluso nel preventivo.
 
 **Importante sul linguaggio:** Il preventivo e un documento cliente-facing. Trasforma il linguaggio tecnico della Scheda in linguaggio comprensibile per il cliente. Evita gergo tecnico dove possibile.
+
+**Importante sulla formattazione:** Usa come riferimento stilistico il preventivo completato "Preventivo piattaforma fornitori" (Doc ID: `1uonJ1vCMbo6eyJHxjpDJL6_Qp1kl5mkhQsV8pNelwqI`). Se hai dubbi sullo stile, leggilo con `mcp__google-workspace__get_doc_content`. Regole chiave:
+
+- **Grassetto con parsimonia**: usa il bold SOLO per brevi label/keyword all'inizio di un bullet point (es: "**Inbox sourcing:** descrizione della funzionalita..."). MAI usare il grassetto per intere frasi, paragrafi o blocchi di testo. Il testo descrittivo dopo i due punti deve essere sempre in stile normale.
+- **Struttura moduli**: ogni modulo ha un titolo (es: "Modulo 1 - Nome Modulo"), un paragrafo introduttivo breve, e le funzionalita elencate come bullet points.
+- **Bullet points**: usa elenchi puntati (non numerati) per le funzionalita all'interno di ciascun modulo. Ogni bullet puo avere una label bold seguita da due punti e una spiegazione in testo normale.
+- **Nesting**: massimo un livello di indentazione nei bullet points. Evita strutture profondamente annidate.
+- **Paragrafi**: i paragrafi descrittivi (overview, introduzione modulo) devono essere in testo normale senza grassetto, concisi e orientati al cliente.
 
 ### Step 4: Verifica e Consegna
 
